@@ -36,6 +36,7 @@ const DeliveryInsights = () => {
   const [deliveryList, setDeliveryList] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("All");
   const [phone,setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [firstName,setFirstName] = useState('');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -58,9 +59,8 @@ const DeliveryInsights = () => {
     try {
       const response = await axios.post(
         "https://b2c-backend-eik4.onrender.com/api/v1/admin/makedeliverypartner",
-        {phone,firstName}
+        {phone, firstName, password}
       );
-
       // Show success message
       toast.success("Delivery partner added successfully! ");
       setRefreshTrigger(prev => prev + 1);
@@ -69,7 +69,8 @@ const DeliveryInsights = () => {
 
       console.log("Success:", response.data.password);
     } catch (error) {
-      toast.error("An error occurred while adding the delivery partner.");
+      const errorMessage = error.response?.data?.message || "An error occurred while adding the delivery partner.";
+      toast.error(errorMessage);
       console.error("Error:", error);
     }
   };
@@ -420,6 +421,14 @@ const DeliveryInsights = () => {
                       onChange={(e)=>setPhone(e.target.value)}
                       type="text"
                       placeholder="Phone Number"
+                      className="border border-gray-300 rounded w-full p-1 md:p-2"
+                    />
+
+                    <input
+                      value={password}
+                      onChange={(e)=>setPassword(e.target.value)}
+                      type="text"
+                      placeholder="Password"
                       className="border border-gray-300 rounded w-full p-1 md:p-2"
                     />
 
